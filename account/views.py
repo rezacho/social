@@ -13,10 +13,10 @@ class UserRegisterView(View):
     form_class = UserRegistrationForm
     template_name = 'account/register.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home:home')
-        return super().dispatch(self, request, *args, **kwargs)
+    # def dispatch(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated:
+    #         return redirect('home:home')
+    #     return super().dispatch(self, request, *args, **kwargs)
 
     def get(self, request):
         form = self.form_class
@@ -36,10 +36,10 @@ class UserLoginView(View):
     form_class = UserLoginForm
     template_name = 'account/login.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home:home')
-        return super().dispatch(self, request, *args, **kwargs)
+    # def dispatch(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated:
+    #         return redirect('home:home')
+    #     return super().dispatch(self, request, *args, **kwargs)
 
     def get(self, request):
         form = self.form_class
