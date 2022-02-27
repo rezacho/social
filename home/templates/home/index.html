@@ -2,5 +2,9 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
-
+    <div class="card">
+        {% for post in posts %}
+            <a href="{% url 'home:post_detail' post.id post.slug %}">{{ post.body|truncatewords:8 }}</a>
+        {% endfor %}
+    </div>
 {% endblock %}
