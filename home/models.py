@@ -12,6 +12,9 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['-created']
+
     def __str__(self):
         return f'{self.slug} - {self.updated}'
 
