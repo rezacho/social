@@ -6,7 +6,7 @@ from django.utils.text import slugify
 from django.contrib import messages
 from django.views import View
 from .forms import PostCreateUpdateForm, CommentCreateForm, CommentReplyForm
-from .models import Post, Comment
+from .models import Post, Comment, Vote
 
 
 # Create your views here.
@@ -116,4 +116,16 @@ class PostAddReplyView(LoginRequiredMixin, View):
             reply.is_reply = True
             reply.save()
             messages.success(request, 'Your reply submitted successfully', extra_tags='success')
+        return redirect('home:post_detail', post.id, post.slug)
+
+
+class PostLikeView(LoginRequiredMixin, View):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        like = Vote.objects.filter(post=post, user=request.user)
+        if like.exists():
+            messages.error(request, 'You have already liked this post', extra_tags='danger')
+        else:
+            Vote.objects.create(post=post, user=request.user)
+            messages.success(request, 'You liked this post', extra_tags='success')
         return redirect('home:post_detail', post.id, post.slug)
