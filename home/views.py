@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.contrib import messages
 from django.views import View
-from .forms import PostCreateUpdateForm, CommentCreateForm, CommentReplyForm
+from .forms import PostCreateUpdateForm, CommentCreateForm, CommentReplyForm, PostSearchFrom
 from .models import Post, Comment, Vote
 
 
@@ -13,9 +13,13 @@ from .models import Post, Comment, Vote
 
 
 class HomeView(View):
+    form_class = PostSearchFrom
+
     def get(self, request):
         posts = Post.objects.all()
-        return render(request, 'home/index.html', context={'posts': posts})
+        if request.GET.get('search'):
+            posts = posts.filter(body__contains=request.GET['search'])
+        return render(request, 'home/index.html', context={'posts': posts, 'form': self.form_class})
 
 
 class PostDetailView(View):
