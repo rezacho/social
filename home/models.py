@@ -21,6 +21,15 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('home:post_detail', args=(self.id, self.slug))
 
+    def likes_count(self):
+        return self.pvotes.count()
+
+    def user_can_like(self, user):
+        user_like = user.uvotes.filter(post=self)
+        if user_like.exists():
+            return True
+        return False
+
 
 class Comment(models.Model):
     body = models.CharField(max_length=400)
